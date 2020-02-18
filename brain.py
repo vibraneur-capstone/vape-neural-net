@@ -4,17 +4,33 @@ import numpy as np
 
 #TODO::parsing data for inputs
 
-visible = keras.layers.Input(shape=(100,1))
-hidden1 = keras.layers.Dense(10, activation='relu')(visible)
-hidden2 = keras.layers.Dense(10, activation='relu')(hidden1)
-hidden3 = keras.layers.Dense(10, activation='relu')(hidden2)
-output = keras.layers.Dense(1, activation='sigmoid')(hidden3)
-model = keras.models.Model(inputs=visible, outputs=output)
+# Inputs
+inputA = keras.layers.Input(shape=(4,))
+inputB = keras.layers.Input(shape=(2140,))
 
-#TODO::training commands and saving the weight data
+# First branch
+x = keras.layers.Dense(10, activation="relu")(inputA)
+#x = keras.models.Model(inputs = inputA, outputs = x)
+
+# Second branch
+y = keras.layers.Dense(500, activation='relu')(inputB)
+y = keras.layers.Dense(250, activation='relu')(y)
+y = keras.layers.Dense(100, activation='relu')(y)
+y = keras.layers.Dense(10, activation='relu')(y)
+#y = keras.models.Model(inputs = inputB, outputs = y)
+
+# Combine these branches
+concatenate = keras.layers.concatenate([x, y])
+
+# Final layers
+z = keras.layers.Dense(10, activation='relu')(concatenate)
+z = keras.layers.Dense(5, activation='relu')(z)
+z = keras.layers.Dense(1, activation='sigmoid')(z)
+
+# Final model
+model = keras.models.Model(inputs=[inputA, inputB], outputs = z)
 
 # summarize layers
 print(model.summary())
 
-# plot graph
-plot_model(model, to_file='NNplot.png')
+#TODO::training commands and saving the weighted data
