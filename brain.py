@@ -30,7 +30,11 @@ z = keras.layers.Dense(1, activation='sigmoid')(z)
 # Final model
 model = keras.models.Model(inputs=[inputA, inputB], outputs = z)
 
-# summarize layers
-print(model.summary())
-
 #TODO::training commands and saving the weighted data
+model.compile(optimizer='adam', loss='crossentropy', metrics=['accuracy'])
+
+# Create a model instance
+model = create_model()
+
+# Display model architecture
+model.summary()
