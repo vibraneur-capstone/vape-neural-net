@@ -11,7 +11,7 @@ import numpy as np
 def CreateModel():
     # Inputs
     inputA = keras.layers.Input(shape=(4,))
-    inputB = keras.layers.Input(shape=(2140,))
+    inputB = keras.layers.Input(shape=(2176))
 
     # First branch
     x = keras.layers.Dense(10, activation="relu")(inputA)
