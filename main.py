@@ -15,6 +15,7 @@ datapath = './dataset/'
 gtpath = './groundtruth/'
 
 #TODO::parsing/set up data for inputs using generator
+# Generates a list of files in our datapath
 data = [f for f in listdir(datapath) if isfile(join(datapath, f))]
 
 # Generate numpy array of single element arrays for ground truth input
