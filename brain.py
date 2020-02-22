@@ -47,7 +47,7 @@ def TrainModel(model, target, input, groundtruth, cycles, batches):
     # Define callbacks to allow training to continue if interrupted
     checkpoint = keras.callbacks.ModelCheckpoint(filepath='./model/%s' % target, monitor='loss', verbose=1, save_best_only=True, mode='min')
     checkpoints = [checkpoint]
-    #model.fit(input, groundtruth, epochs=, batch_size=, callbacks=checkpoints)
+    #model.fit([input1, input2], groundtruth, epochs=, batch_size=, callbacks=checkpoints)
 
 # Loads in a model given its .h5 file name and creates an instance of it
 def LoadModel(target):
