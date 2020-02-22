@@ -1,7 +1,7 @@
 # Richard Walmsley
 # 17/02/2020
-# This source holds functions to make manipulating the model easier,
-# to separate dealing with input data parsing and modularizing functions
+# This source holds functions to make manipulating the model easier.
+# It separates dealing with input data parsing and modularizes functions.
 
 import tensorflow as tf
 from tensorflow import keras
