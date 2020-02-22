@@ -37,15 +37,14 @@ def CreateModel():
     model.summary()
     
     # Compiles model with predetermined training configuration
-    model.compile(optimizer='adam', loss='crossentropy', metrics=['accuracy'])
+    model.compile(optimizer='adam', loss='mean_squared_error', metrics=['accuracy'])
     
     return model
 
+#TODO::Finish code to train a model using checkpoints or from scratch
 # Trains a model to a given set of input and groundtruth data
-def TrainModel(model, input, groundtruth):  
+#def TrainModel(model, input, groundtruth):  
     #model.fit(input, groundtruth, epochs=, batch_size=)
-
-    #TODO::Finish code to train a model using checkpoints or from scratch
 
 # Loads in a model given its .h5 file name and creates an instance of it
 def LoadModel(target):
@@ -53,7 +52,7 @@ def LoadModel(target):
     model = keras.models.load_model('./model/%s' % target)
     model.summary()
     model.get_weights()
-    
+
     return model
     
     # Create a model instance
