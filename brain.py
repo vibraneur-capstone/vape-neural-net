@@ -1,11 +1,11 @@
 # Richard Walmsley
 # 17/02/2020
+# This source holds functions to make manipulating the model easier,
+# to separate dealing with input data parsing and modularizing functions
 
 import tensorflow as tf
 from tensorflow import keras
 import numpy as np
-
-#TODO::parsing/set up data for inputs
 
 # Creates the model. Use this to initialize or reinitialize the model for training.
 def CreateModel():
@@ -41,10 +41,13 @@ def CreateModel():
     
     return model
 
-#TODO::Finish code to train a model using checkpoints or from scratch
-# Trains a model to a given set of input and groundtruth data
-#def TrainModel(model, input, groundtruth):  
-    #model.fit(input, groundtruth, epochs=, batch_size=)
+#TODO::Finish code to train a model
+# Trains a model to a given set of input and groundtruth data, epochs and batch size
+def TrainModel(model, target, input, groundtruth, cycles, batches):
+    # Define callbacks to allow training to continue if interrupted
+    checkpoint = keras.callbacks.ModelCheckpoint(filepath='./model/%s' % target, monitor='loss', verbose=1, save_best_only=True, mode='min')
+    checkpoints = [checkpoint]
+    #model.fit(input, groundtruth, epochs=, batch_size=, callbacks=checkpoints)
 
 # Loads in a model given its .h5 file name and creates an instance of it
 def LoadModel(target):

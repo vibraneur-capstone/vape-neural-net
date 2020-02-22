@@ -9,6 +9,8 @@ from tensorflow import keras
 import numpy as np
 import brain
 
+#TODO::parsing/set up data for inputs
+
 m = brain.CreateModel()
 brain.SaveModel(m, 'model.h5')
 m = brain.LoadModel('model.h5')
