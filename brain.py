@@ -36,12 +36,13 @@ def CreateModel():
     # Display model architecture
     model.summary()
     
+    # Compiles model with predetermined training configuration
+    model.compile(optimizer='adam', loss='crossentropy', metrics=['accuracy'])
+    
     return model
 
 # Trains a model to a given set of input and groundtruth data
-def TrainModel(model, input, groundtruth):
-    #TODO:confirm that this training code is correct
-    model.compile(optimizer='adam', loss='crossentropy', metrics=['accuracy'])
+def TrainModel(model, input, groundtruth):  
     #model.fit(input, groundtruth, epochs=, batch_size=)
 
     #TODO::Finish code to train a model using checkpoints or from scratch
@@ -58,7 +59,7 @@ def LoadModel(target):
     # Create a model instance
     #model = create_model()
     
-# Saves model as target .h5 file name
+# Saves model as target .h5 file name.
 def SaveModel(model, target):
     print("Saving model %s..." % target)
     model.save('./model/%s' % target)

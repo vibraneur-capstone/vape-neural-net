@@ -1,3 +1,5 @@
+# Richard Walmsley
+# 22/02/2020
 # Use this file to run commands from brain.py
 # From brain.py we can initialize, save, load
 # and train the NN as required.
