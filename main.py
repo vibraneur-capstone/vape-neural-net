@@ -21,21 +21,32 @@ data = [f for f in listdir(datapath) if isfile(join(datapath, f))]
 # Generate numpy array of single element arrays for ground truth input
 gtfile = open(gtpath + 'gt1.dat', "r")
 gt = np.array([[float(i)] for i in gtfile.readlines()])
-print(gt)
+gt = gt[0:104]
 
-"""
-def BatchGenerator(files):
+def generator(files, groundtruth, epochs):
+    input1 = np.zeros((1, 4))
+    input2 = np.zeros((1, 2176))
+    truth = np.zeros((1,1))
+    i = 0
+    
     for f in files:
         # Open up our file
-        input = open(path + file,"r")
+        input = open(path + f,"r")
         
         # Read our file
-        lines = input.readlines()
+        line = np.array(input.readline().split('\t'))
+        split = np.split(line, [4])
+        input1 = split([0])
+        input2 = split([1])
+        truth = groundtruth([i])
         
-        for x in lines:
-            lines.split()
-"""
+        yield [input1, input2], truth
+        i += 1
+
+### Manipulate the model here ###
 
 #m = brain.CreateModel()
 #brain.SaveModel(m, 'model.h5')
-#m = brain.LoadModel('model.h5')
+m = brain.LoadModel('model.h5')
+
+brain.TrainModel(m, './model/model.g5', gen(data, gt, len(data)))
