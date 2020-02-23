@@ -23,7 +23,7 @@ gtfile = open(gtpath + 'gt1.dat', "r")
 gt = np.array([[float(i)] for i in gtfile.readlines()])
 gt = gt[0:104]
 
-def generator(files, groundtruth):
+def generator(path, files, groundtruth):
     input1 = np.zeros((1, 4))
     input2 = np.zeros((1, 2176))
     truth = np.zeros((1,1))
@@ -49,5 +49,5 @@ def generator(files, groundtruth):
 #brain.SaveModel(m, 'model.h5')
 m = brain.LoadModel('model.h5')
 
-gen = generator(data, gt)
+gen = generator(datapath, data, gt)
 brain.TrainModel(m, './model/model.g5', gen, len(data))
