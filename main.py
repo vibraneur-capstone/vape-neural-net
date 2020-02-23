@@ -23,7 +23,7 @@ gtfile = open(gtpath + 'gt1.dat', "r")
 gt = np.array([[float(i)] for i in gtfile.readlines()])
 gt = gt[0:104]
 
-def generator(files, groundtruth, epochs):
+def generator(files, groundtruth):
     input1 = np.zeros((1, 4))
     input2 = np.zeros((1, 2176))
     truth = np.zeros((1,1))
@@ -49,4 +49,5 @@ def generator(files, groundtruth, epochs):
 #brain.SaveModel(m, 'model.h5')
 m = brain.LoadModel('model.h5')
 
-brain.TrainModel(m, './model/model.g5', gen(data, gt, len(data)))
+gen = generator(data, gt)
+brain.TrainModel(m, './model/model.g5', gen, len(data))

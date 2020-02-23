@@ -43,11 +43,11 @@ def CreateModel():
 
 #TODO::Finish code to train a model
 # Trains a model to a given a generator, target, epochs and batch size
-def TrainModel(model, target, generator):
+def TrainModel(model, target, generator, length):
     # Define callbacks to allow training to continue if interrupted
     checkpoint = keras.callbacks.ModelCheckpoint(filepath='./model/%s' % target, monitor='loss', verbose=1, save_best_only=True, mode='min')
     checkpoints = [checkpoint]
-    model.fit_generator(generator, epochs=, batch_size=, callbacks=checkpoints)
+    model.fit_generator(generator, steps_per_epoch=1, epochs=length, callbacks=checkpoints)
 
 # Loads in a model given its .h5 file name and creates an instance of it
 def LoadModel(target):
