@@ -17,7 +17,8 @@ def CreateModel():
     x = keras.layers.Dense(10, activation="relu")(inputA)
 
     # Second branch
-    y = keras.layers.Dense(500, activation='relu')(inputB)
+    y = keras.layers.Dense(1000, activation='relu')(inputB)
+    y = keras.layers.Dense(500, activation='relu')(y)
     y = keras.layers.Dense(250, activation='relu')(y)
     y = keras.layers.Dense(100, activation='relu')(y)
     y = keras.layers.Dense(10, activation='relu')(y)
