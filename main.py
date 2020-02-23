@@ -13,6 +13,7 @@ import brain
 
 datapath = './dataset/'
 gtpath = './groundtruth/'
+modelname = 'model.h5'
 
 #TODO::parsing/set up data for inputs using generator
 # Generates a list of files in our datapath
@@ -47,4 +48,4 @@ brain.SaveModel(m, 'model.h5')
 m = brain.LoadModel('model.h5')
 
 gen = generator(datapath, data, gt)
-brain.TrainModel(m, './model/model.h5', gen, len(data))
+brain.TrainModel(m, modelname, gen, len(data))
