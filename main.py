@@ -24,9 +24,6 @@ gt = np.array([[float(i)] for i in gtfile.readlines()])
 gt = gt[0:104]
 
 def generator(path, files, groundtruth):
-    input1 = np.zeros((1, 4))
-    input2 = np.zeros((1, 2176))
-    truth = np.zeros((1,1))
     i = 0
     
     for f in files:
@@ -34,20 +31,20 @@ def generator(path, files, groundtruth):
         input = open(path + f,"r")
         
         # Read our file
-        line = np.array(input.readline().split('\t'))
+        line = np.array(input.readline().split(' '))
         split = np.split(line, [4])
-        input1 = split([0])
-        input2 = split([1])
-        truth = groundtruth([i])
+        input1 = np.array([split[0]]).astype(np.float)
+        input2 = np.array([split[1]]).astype(np.float)
+        truth = groundtruth[i].astype(np.float)
         
         yield [input1, input2], truth
         i += 1
 
 ### Manipulate the model here ###
 
-#m = brain.CreateModel()
-#brain.SaveModel(m, 'model.h5')
+m = brain.CreateModel()
+brain.SaveModel(m, 'model.h5')
 m = brain.LoadModel('model.h5')
 
 gen = generator(datapath, data, gt)
-brain.TrainModel(m, './model/model.g5', gen, len(data))
+brain.TrainModel(m, './model/model.h5', gen, len(data))
