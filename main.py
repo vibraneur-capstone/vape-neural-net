@@ -31,6 +31,8 @@ gtfile = open(gtpath + 'gt1.dat', "r")
 gt = np.array([[float(i)] for i in gtfile.readlines()])
 
 #TODO:: fix generator by adding batch sizes and working around epochs
+#TODO:: batch sizes of 4 second intervals
+#TODO:: random data point selection
 
 def generator(path, files, groundtruth):
     for f in files:
@@ -59,4 +61,4 @@ m = brain.CreateModel()
 #gen = generator(datapath, data, gt)
 
 # Train our model (arbitrary 100 epochs)
-#brain.TrainModel(m, modelname, gen, len(data), 100)
+#brain.TrainModel(m, modelname, gen, 4, 100)
