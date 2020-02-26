@@ -11,16 +11,16 @@ import numpy as np
 def CreateModel():
     # Inputs
     inputA = keras.layers.Input(shape=(4,))
-    inputB = keras.layers.Input(shape=(10240))
+    inputB = keras.layers.Input(shape=(10240,1))
 
     # First branch
     x = keras.layers.Dense(10, activation="relu")(inputA)
 
+    ##TODO:: incorporate dropout layers in branch 2
+
     # Second branch
-    y = keras.layers.Dense(1000, activation='relu')(inputB)
-    y = keras.layers.Dense(500, activation='relu')(y)
+    y = keras.layers.Dense(500, input_shape=(10240), activation='relu', return_sequence=False)(inputB)
     y = keras.layers.Dense(250, activation='relu')(y)
-    y = keras.layers.Dense(100, activation='relu')(y)
     y = keras.layers.Dense(10, activation='relu')(y)
 
     # Combine these branches
@@ -42,13 +42,13 @@ def CreateModel():
     
     return model
 
-#TODO::Finish code to train a model
+#TODO::Sort out epochs and batches
 # Trains a model to a given a generator, target, epochs and batch size
-def TrainModel(model, target, generator, length):
+def TrainModel(model, target, generator, steps, length):
     # Define callbacks to allow training to continue if interrupted
     checkpoint = keras.callbacks.ModelCheckpoint(filepath='./model/%s' % target, monitor='loss', verbose=1, save_best_only=True, mode='min')
     checkpoints = [checkpoint]
-    model.fit_generator(generator, steps_per_epoch=1, epochs=length, callbacks=checkpoints)
+    model.fit_generator(generator, steps_per_epoch=steps, epochs=length, callbacks=checkpoints)
 
 # Loads in a model given its .h5 file name and creates an instance of it
 def LoadModel(target):

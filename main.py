@@ -11,21 +11,28 @@ from os.path import isfile, join
 import numpy as np
 import brain
 
-datapath = './dataset/'
+
+## Training parameters
+dataset = 1
+bearing = 1
+##
+
+datapath = './dataset/output_%i/' % dataset
 gtpath = './groundtruth/'
 modelname = 'model.h5'
 
-# Generates a list of files in our datapath
-data = [f for f in listdir(datapath) if isfile(join(datapath, f))]
+# Generates a list of files in path based on dataset and bearing parameters
+data = [f for f in listdir(datapath)
+            if isfile(join(datapath, f)) 
+            and f.startswith('dataset_%i.bearing_%i.' % (dataset, bearing))] 
 
 # Generate numpy array of single element arrays for ground truth input
 gtfile = open(gtpath + 'gt1.dat', "r")
 gt = np.array([[float(i)] for i in gtfile.readlines()])
-gt = np.split(gt,[104])[0]
+
+#TODO:: fix generator by adding batch sizes and working around epochs
 
 def generator(path, files, groundtruth):
-    i = 0
-    
     for f in files:
         # Open up our file
         input = open(path + f,"r")
@@ -37,11 +44,10 @@ def generator(path, files, groundtruth):
         split = np.split(line, [4])
         input1 = np.array([split[0]]).astype(np.float)
         input2 = np.array([split[1]]).astype(np.float)
-        truth = groundtruth[i].astype(np.float)
+        truth = groundtruth[files.index(f)].astype(np.float)
         
         # Give this to the model
         yield [input1, input2], truth
-        i += 1
 
 ### Manipulate the model here ###
 
@@ -50,7 +56,7 @@ m = brain.CreateModel()
 #m = brain.LoadModel(modelname)
 
 # Create generator instance
-gen = generator(datapath, data, gt)
+#gen = generator(datapath, data, gt)
 
-# Train our model
-brain.TrainModel(m, modelname, gen, len(data))
+# Train our model (arbitrary 100 epochs)
+#brain.TrainModel(m, modelname, gen, len(data), 100)

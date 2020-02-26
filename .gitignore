@@ -1,3 +1,5 @@
-venv
-dataset
-groundtruth
+venv/
+dataset/
+groundtruth/
+model/
+__pycache__/
