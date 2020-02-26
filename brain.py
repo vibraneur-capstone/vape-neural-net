@@ -19,7 +19,7 @@ def CreateModel():
     ##TODO:: incorporate dropout layers in branch 2
 
     # Second branch
-    y = keras.layers.Dense(500, input_shape=(10240), activation='relu', return_sequence=False)(inputB)
+    y = keras.layers.Dense(500, input_shape=(10240), activation='relu', return_sequences=False)(inputB)
     y = keras.layers.Dense(250, activation='relu')(y)
     y = keras.layers.Dense(10, activation='relu')(y)
 
