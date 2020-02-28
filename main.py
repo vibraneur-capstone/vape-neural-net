@@ -66,17 +66,21 @@ def generator(path, files, groundtruth, batchsize):
                 # Split our input into an array of size (4,) and (10240,)
                 # and find corresponding truth value
                 split = np.split(line, [4])
-                input1 = np.array([split[0]]).astype(np.float32)
-                input2 = np.array([split[1]]).astype(np.float32)
-                truth = groundtruth[files.index(f)].astype(np.float32)
+                try:
+                    input1 = np.array([split[0]]).astype(np.float32)
+                    input2 = np.array([split[1]]).astype(np.float32)
+                    truth = groundtruth[files.index(f)].astype(np.float32)
+                except:
+                    print("\nSomething went wrong with your data in file " + f + "\n")
+                    continue
                 
                 # Stream this to the model during training
                 yield ([input1, input2], truth)
 
 ### Manipulate the model here ###
 
-m = brain.CreateModel()
-brain.SaveModel(m, modelname)
+#m = brain.CreateModel()
+#brain.SaveModel(m, modelname)
 
 # Loads in the model and trains it over bearings 1 to 8 in specified dataset
 for x in range(1,8):
