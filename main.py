@@ -18,7 +18,7 @@ dataset = 1
 bearing = 1
 
 samples = 2156
-batches = 4 # Batch size is 4 because it is a multiple of the total dataset length (2156 = 2*2*7*7*11)
+batches = 44 # Batch size is 4 because it is a multiple of the total dataset length (2156 = 2*2*7*7*11)
 steps = ceil(samples/batches)
 epochs = 10
 ##
@@ -66,6 +66,7 @@ def generator(path, files, groundtruth, batchsize):
                 input2 = np.array([split[1]]).astype(np.float32)
                 truth = groundtruth[files.index(f)].astype(np.float32)
                 
+                # Stream this to the model during training
                 yield ([input1, input2], truth)
 
 ### Manipulate the model here ###

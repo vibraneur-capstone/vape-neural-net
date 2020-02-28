@@ -7,7 +7,6 @@ import tensorflow as tf
 from tensorflow import keras
 import numpy as np
 
-#TODO:: Change model learning rate so loss doesn't increase to infinity
 # Creates the model. Use this to initialize or reinitialize the model for training.
 def CreateModel():
     # Inputs
@@ -18,11 +17,11 @@ def CreateModel():
     x = keras.layers.Dense(10, activation="relu")(inputA)
 
     #TODO:: Get LSTM layer to work
-    #TODO:: incorporate dropout layers in branch 2
 
     # Second branch
     #y = keras.layers.LSTM(500, input_shape=(10240,1), activation='relu', return_sequences=False)(inputB)
     y = keras.layers.Dense(500, activation='relu')(inputB)
+    y = keras.layers.Dropout(rate=0.2)(y) # Dropout layer with 20% dropout to prevent overfitting
     y = keras.layers.Dense(250, activation='relu')(y)
     y = keras.layers.Dense(10, activation='relu')(y)
 
@@ -39,8 +38,11 @@ def CreateModel():
     # Display model architecture
     model.summary()
     
+    # Generate optimizer
+    adam = keras.optimizers.Adam(learning_rate=0.00000001)
+    
     # Compiles model with predetermined training configuration
-    model.compile(optimizer='adam', loss='mean_squared_error', metrics=['accuracy'])
+    model.compile(optimizer=adam, loss='mean_squared_error', metrics=['accuracy'])
     
     return model
 
