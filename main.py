@@ -75,12 +75,12 @@ def generator(path, files, groundtruth, batchsize):
 
 ### Manipulate the model here ###
 
-m = brain.CreateModel()
-brain.SaveModel(m, modelname)
+#m = brain.CreateModel()
+#brain.SaveModel(m, modelname)
 
-'''
-for i in range(1,8):
-    datapath, datalist, groundtruth = getData()
+# Loads in the model and trains it over bearings 1 to 8 in specified dataset
+for x in range(1,8):
+    datapath, datalist, groundtruth = getData(dataset, x) # dataset 1, bearing x
 
     m = brain.LoadModel(modelname)
 
@@ -89,5 +89,4 @@ for i in range(1,8):
 
     # Train our model (arbitrary 10 epochs)
     brain.TrainModel(m, modelname, gen, steps, epochs)
-'''
 
