@@ -30,7 +30,7 @@ def CreateModel():
 
     # Final layers
     z = keras.layers.Dense(10, activation='relu')(concatenate)
-    z = keras.layers.Dense(1, activation='sigmoid')(z)
+    z = keras.layers.Dense(1, activation='relu')(z)
 
     # Final model
     model = keras.models.Model(inputs=[inputA, inputB], outputs = z)
@@ -39,7 +39,7 @@ def CreateModel():
     model.summary()
     
     # Generate optimizer
-    adam = keras.optimizers.Adam(learning_rate=0.0000000000000001)
+    adam = keras.optimizers.Adam(learning_rate=0.0000001)
     
     # Compiles model with predetermined training configuration
     model.compile(optimizer=adam, loss='mean_squared_error', metrics=['accuracy'])
@@ -58,7 +58,7 @@ def TrainModel(model, target, generator, number_of_steps, number_of_epochs):
 def LoadModel(target):
     print("Loading model %s..." % target)
     model = keras.models.load_model('./model/%s' % target)
-    model.summary()
+    #model.summary()
     model.get_weights()
 
     return model

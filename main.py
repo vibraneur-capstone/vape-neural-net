@@ -14,8 +14,10 @@ import brain
 
 
 ## Training parameters
+modelname = 'model.h5'
+
 dataset = 1
-bearing = 3
+bearing = 5
 
 samples = 2156
 batches = 44 # Batch size is a multiple of dataset length (2156 = 2*2*7*7*11)
@@ -23,18 +25,20 @@ steps = ceil(samples/batches)
 epochs = 10
 ##
 
-datapath = './dataset/output_%i/' % dataset
-gtpath = './groundtruth/'
-modelname = 'model.h5'
+def getData(dataset, bearing):
+    dpath = './dataset/output_%i/' % dataset
+    gtpath = './groundtruth/'
 
-# Generates a list of files in path based on dataset and bearing parameters
-data = [f for f in listdir(datapath)
-            if isfile(join(datapath, f)) 
-            and f.startswith('dataset_%i.bearing_%i.' % (dataset, bearing))] 
+    # Generates a list of files in path based on dataset and bearing parameters
+    data = [f for f in listdir(datapath)
+                if isfile(join(datapath, f)) 
+                and f.startswith('dataset_%i.bearing_%i.' % (dataset, bearing))] 
 
-# Generate numpy array of single element arrays for ground truth input
-gtfile = open(gtpath + 'gt1.dat', "r")
-gt = np.array([[float(i)] for i in gtfile.readlines()])
+    # Generate numpy array of single element arrays for ground truth input
+    gtfile = open(gtpath + 'gt%i.dat' % dataset, "r")
+    gt = np.array([[float(i)] for i in gtfile.readlines()])
+    
+    return dpath, data, gt
 
 #TODO:: Add time-step for LSTM layer
 #TODO:: Add random data point selection
@@ -72,11 +76,18 @@ def generator(path, files, groundtruth, batchsize):
 ### Manipulate the model here ###
 
 m = brain.CreateModel()
-#brain.SaveModel(m, modelname)
-#m = brain.LoadModel(modelname)
+brain.SaveModel(m, modelname)
 
-# Create generator instance
-gen = generator(datapath, data, gt, batches)
+'''
+for i in range(1,8):
+    datapath, datalist, groundtruth = getData()
 
-# Train our model (arbitrary 10 epochs)
-brain.TrainModel(m, modelname, gen, steps, epochs)
+    m = brain.LoadModel(modelname)
+
+    # Create generator instance
+    gen = generator(datapath, datalist, groundtruth, batches)
+
+    # Train our model (arbitrary 10 epochs)
+    brain.TrainModel(m, modelname, gen, steps, epochs)
+'''
+
