@@ -28,7 +28,6 @@ def CreateModel():
 
     # Final layers
     z = keras.layers.Dense(10, activation='relu')(concatenate)
-    z = keras.layers.Dense(5, activation='relu')(z)
     z = keras.layers.Dense(1, activation='sigmoid')(z)
 
     # Final model
