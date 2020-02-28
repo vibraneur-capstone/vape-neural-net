@@ -17,21 +17,21 @@ import brain
 modelname = 'model.h5'
 
 dataset = 1
-bearing = 5
 
 samples = 2156
-batches = 44 # Batch size is a multiple of dataset length (2156 = 2*2*7*7*11)
+batches = 4 # Batch size is a multiple of dataset length (2156 = 2*2*7*7*11)
 steps = ceil(samples/batches)
-epochs = 10
+epochs = 25
 ##
 
+# Formats lists of files given a bearing and dataset. Returns path, list of files and groundtruth array
 def getData(dataset, bearing):
     dpath = './dataset/output_%i/' % dataset
     gtpath = './groundtruth/'
 
     # Generates a list of files in path based on dataset and bearing parameters
-    data = [f for f in listdir(datapath)
-                if isfile(join(datapath, f)) 
+    data = [f for f in listdir(dpath)
+                if isfile(join(dpath, f)) 
                 and f.startswith('dataset_%i.bearing_%i.' % (dataset, bearing))] 
 
     # Generate numpy array of single element arrays for ground truth input
@@ -75,11 +75,13 @@ def generator(path, files, groundtruth, batchsize):
 
 ### Manipulate the model here ###
 
-#m = brain.CreateModel()
-#brain.SaveModel(m, modelname)
+m = brain.CreateModel()
+brain.SaveModel(m, modelname)
 
 # Loads in the model and trains it over bearings 1 to 8 in specified dataset
 for x in range(1,8):
+    print("TRAINING: Dataset %i, Bearing %i" % (dataset, x))
+
     datapath, datalist, groundtruth = getData(dataset, x) # dataset 1, bearing x
 
     m = brain.LoadModel(modelname)
@@ -87,6 +89,6 @@ for x in range(1,8):
     # Create generator instance
     gen = generator(datapath, datalist, groundtruth, batches)
 
-    # Train our model (arbitrary 10 epochs)
+    # Train our model
     brain.TrainModel(m, modelname, gen, steps, epochs)
 
