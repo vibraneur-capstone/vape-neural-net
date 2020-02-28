@@ -11,7 +11,7 @@ import numpy as np
 def CreateModel():
     # Inputs
     inputA = keras.layers.Input(shape=(4,))
-    inputB = keras.layers.Input(shape=(10240,1))
+    inputB = keras.layers.Input(shape=(10240,))
 
     # First branch
     x = keras.layers.Dense(10, activation="relu")(inputA)
@@ -42,12 +42,12 @@ def CreateModel():
     return model
 
 #TODO::Sort out epochs and batches
-# Trains a model to a given a generator, target, epochs and batch size
-def TrainModel(model, target, generator, steps, length):
+# Trains a model to a given a generator, target, epochs and step size (batches done by generator)
+def TrainModel(model, target, generator, number_of_steps, number_of_epochs):
     # Define callbacks to allow training to continue if interrupted
     checkpoint = keras.callbacks.ModelCheckpoint(filepath='./model/%s' % target, monitor='loss', verbose=1, save_best_only=True, mode='min')
     checkpoints = [checkpoint]
-    model.fit_generator(generator, steps_per_epoch=steps, epochs=length, callbacks=checkpoints)
+    model.fit_generator(generator, steps_per_epoch=number_of_steps, epochs=number_of_epochs, callbacks=checkpoints)
 
 # Loads in a model given its .h5 file name and creates an instance of it
 def LoadModel(target):
