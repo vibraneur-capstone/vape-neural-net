@@ -36,37 +36,37 @@ data = [f for f in listdir(datapath)
 gtfile = open(gtpath + 'gt1.dat', "r")
 gt = np.array([[float(i)] for i in gtfile.readlines()])
 
-#TODO:: fix generator by adding batch sizes and working around epochs
-#TODO:: batch sizes of 4 second intervals
-#TODO:: random data point selection
+#TODO:: Add time-step for LSTM layer
+#TODO:: Add random data point selection
 
 # Generate batches of a given size, stopping once it reaches the total amount of data
 # and streams this to the model iteratively as it trains.
 def generator(path, files, groundtruth, batchsize):
-
-    # First for loop iterates across the whole dataset length in batch sizes
-    for batch in range(0, len(files), batchsize):
-        # Second for loop iterates through each batch
-        # so we yield 2 inputs and ground truth times the batch size
-        for i in range(batch, batch + batchsize):
+    while True:
+        # First for loop iterates across the whole dataset length in batch sizes
+        for batch in range(0, len(files), batchsize):
         
-            # Get file at specified index
-            f = files[i]
-        
-            # Open up our file
-            input = open(path + f,"r")
+            # Second for loop iterates through each batch
+            # so we yield 2 inputs and ground truth times the batch size
+            for i in range(batch, batch + batchsize):
             
-            # Read our file
-            line = np.array(input.readline().split(' '))
+                # Get file at specified index
+                f = files[i]
             
-            # Split our input into an array of size (4,) and (10240,)
-            # and find corresponding truth value
-            split = np.split(line, [4])
-            input1 = np.array([split[0]]).astype(np.float32)
-            input2 = np.array([split[1]]).astype(np.float32)
-            truth = groundtruth[files.index(f)].astype(np.float32)
-            
-            yield ([input1, input2], truth)
+                # Open up our file
+                input = open(path + f,"r")
+                
+                # Read our file
+                line = np.array(input.readline().split(' '))
+                
+                # Split our input into an array of size (4,) and (10240,)
+                # and find corresponding truth value
+                split = np.split(line, [4])
+                input1 = np.array([split[0]]).astype(np.float32)
+                input2 = np.array([split[1]]).astype(np.float32)
+                truth = groundtruth[files.index(f)].astype(np.float32)
+                
+                yield ([input1, input2], truth)
 
 ### Manipulate the model here ###
 

@@ -7,6 +7,7 @@ import tensorflow as tf
 from tensorflow import keras
 import numpy as np
 
+#TODO:: Change model learning rate so loss doesn't increase to infinity
 # Creates the model. Use this to initialize or reinitialize the model for training.
 def CreateModel():
     # Inputs
@@ -16,7 +17,8 @@ def CreateModel():
     # First branch
     x = keras.layers.Dense(10, activation="relu")(inputA)
 
-    ##TODO:: incorporate dropout layers in branch 2
+    #TODO:: Get LSTM layer to work
+    #TODO:: incorporate dropout layers in branch 2
 
     # Second branch
     #y = keras.layers.LSTM(500, input_shape=(10240,1), activation='relu', return_sequences=False)(inputB)
