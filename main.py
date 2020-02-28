@@ -15,10 +15,10 @@ import brain
 
 ## Training parameters
 dataset = 1
-bearing = 1
+bearing = 3
 
 samples = 2156
-batches = 44 # Batch size is 4 because it is a multiple of the total dataset length (2156 = 2*2*7*7*11)
+batches = 44 # Batch size is a multiple of dataset length (2156 = 2*2*7*7*11)
 steps = ceil(samples/batches)
 epochs = 10
 ##

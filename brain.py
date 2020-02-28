@@ -39,10 +39,10 @@ def CreateModel():
     model.summary()
     
     # Generate optimizer
-    adam = keras.optimizers.Adam(learning_rate=0.00000001)
+    sgd = keras.optimizers.SGD(learning_rate=0.000000000001)
     
     # Compiles model with predetermined training configuration
-    model.compile(optimizer=adam, loss='mean_squared_error', metrics=['accuracy'])
+    model.compile(optimizer=sgd, loss='mean_squared_error', metrics=['accuracy'])
     
     return model
 
