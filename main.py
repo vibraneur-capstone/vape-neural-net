@@ -21,13 +21,6 @@ train = True
 evaluate = False
 ##
 
-## Training parameters
-samples = 2156
-batches = 4 # Batch size is a multiple of dataset length (2156 = 2*2*7*7*11)
-steps = ceil(samples/batches)
-epochs = 20
-##
-
 # Formats lists of files given a bearing and dataset. Returns path, list of files and groundtruth array
 def getData(dataset, bearing):
     dpath = './dataset/output_%i/' % dataset
@@ -42,7 +35,14 @@ def getData(dataset, bearing):
     gtfile = open(gtpath + 'gt%i.dat' % dataset, "r")
     gt = np.array([[float(i)] for i in gtfile.readlines()])
     
-    return dpath, data, gt
+    ## Training parameters
+    samples = len(data)
+    batches = 4 # Safe batch size
+    steps = ceil(samples/batches)
+    epochs = 20
+    ##
+    
+    return dpath, data, gt, samples, batches, steps, epochs
 
 #TODO:: Add time-step for LSTM layer
 #TODO:: Add random data point selection
@@ -96,7 +96,7 @@ if train:
         for y in range(1,8):
             print("TRAINING: Dataset %i, Bearing %i" % (x, y))
 
-            datapath, datalist, groundtruth = getData(x, y) # dataset x, bearing y
+            datapath, datalist, groundtruth, samples, batches, steps, epochs = getData(x, y) # dataset x, bearing y
 
             # Create generator instance
             gen = generator(datapath, datalist, groundtruth, batches)
@@ -109,7 +109,7 @@ if evaluate:
     for z in range(1,4):
         print("EVALUATING: Dataset %i, Bearing %i" % (x, y))
         
-        datapath, datalist, groundtruth = getData(x, y) # dataset x, bearing y
+        datapath, datalist, groundtruth, samples, batches, steps, epochs = getData(x, y) # dataset x, bearing y
 
         # Create generator instance
         gen = generator(datapath, datalist, groundtruth, batches)
