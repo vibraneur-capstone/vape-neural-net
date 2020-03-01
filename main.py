@@ -15,10 +15,10 @@ import brain
 ## Options and Settings
 modelname = 'model.h5'
 
-create = False
-load = True
+create = True
+load = False
 train = True
-evaluate = False
+evaluate = True
 ##
 
 # Formats lists of files given a bearing and dataset. Returns path, list of files and groundtruth array
@@ -39,7 +39,7 @@ def getData(dataset, bearing):
     samples = len(data)
     batches = 4 # Safe batch size
     steps = ceil(samples/batches)
-    epochs = 20
+    epochs = 30
     ##
     
     return dpath, data, gt, samples, batches, steps, epochs
@@ -90,29 +90,47 @@ if create:
 if load:
     m = brain.LoadModel(modelname)
 
+# Training for dataset 1 and 3
 if train:
-    # Loads in the model and trains it over dataset 1 and 3 for bearings 1 to 8
-    for x in range(1,4,2):
-        for y in range(1,8):
-            print("TRAINING: Dataset %i, Bearing %i" % (x, y))
 
-            datapath, datalist, groundtruth, samples, batches, steps, epochs = getData(x, y) # dataset x, bearing y
+    dataset=1
+    for y in range(1,9):
+        print("TRAINING: Dataset %i, Bearing %i" % (dataset, y))
 
-            # Create generator instance
-            gen = generator(datapath, datalist, groundtruth, batches)
+        datapath, datalist, groundtruth, samples, batches, steps, epochs = getData(dataset, y) # dataset x, bearing y
 
-            # Train our model
-            brain.TrainModel(m, modelname, gen, steps, epochs)
+        # Create generator instance
+        gen = generator(datapath, datalist, groundtruth, batches)
 
+        # Train our model
+        history = brain.TrainModel(m, modelname, gen, steps, epochs)
+        brain.SaveModel(m, modelname)
+    
+    dataset = 3
+    for y in range(1,5):
+        print("TRAINING: Dataset %i, Bearing %i" % (dataset, y))
+
+        datapath, datalist, groundtruth, samples, batches, steps, epochs = getData(dataset, y) # dataset x, bearing y
+
+        # Create generator instance
+        gen = generator(datapath, datalist, groundtruth, batches)
+
+        # Train our model
+        history = brain.TrainModel(m, modelname, gen, steps, epochs)
+
+# Evaluation for dataset 2
 if evaluate:
-    # Evaluates model on dataset 2 for bearings 1 to 4
-    for z in range(1,4):
-        print("EVALUATING: Dataset %i, Bearing %i" % (x, y))
+    for z in range(1,5):
+        print("EVALUATING: Dataset %i, Bearing %i" % (2, z))
         
-        datapath, datalist, groundtruth, samples, batches, steps, epochs = getData(x, y) # dataset x, bearing y
+        datapath, datalist, groundtruth, samples, batches, steps, epochs = getData(2, z) # dataset x, bearing y
 
         # Create generator instance
         gen = generator(datapath, datalist, groundtruth, batches)
 
         # Evaluate the model
-        brain.EvaluateModel(m, modelname, gen, steps)
+        results = brain.EvaluateModel(m, modelname, gen, steps)
+
+        print("Evaluation metrics: ", results)
+        
+brain.SaveModel(m, modelname)
