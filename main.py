@@ -12,16 +12,20 @@ import numpy as np
 from math import ceil
 import brain
 
-
-## Training parameters
+## Options and Settings
 modelname = 'model.h5'
 
-dataset = 1
+create = False
+load = True
+train = True
+evaluate = False
+##
 
+## Training parameters
 samples = 2156
 batches = 4 # Batch size is a multiple of dataset length (2156 = 2*2*7*7*11)
 steps = ceil(samples/batches)
-epochs = 25
+epochs = 20
 ##
 
 # Formats lists of files given a bearing and dataset. Returns path, list of files and groundtruth array
@@ -79,20 +83,36 @@ def generator(path, files, groundtruth, batchsize):
 
 ### Manipulate the model here ###
 
-#m = brain.CreateModel()
-#brain.SaveModel(m, modelname)
+if create:
+    m = brain.CreateModel()
+    brain.SaveModel(m, modelname)
 
-# Loads in the model and trains it over bearings 1 to 8 in specified dataset
-for x in range(1,8):
-    print("TRAINING: Dataset %i, Bearing %i" % (dataset, x))
-
-    datapath, datalist, groundtruth = getData(dataset, x) # dataset 1, bearing x
-
+if load:
     m = brain.LoadModel(modelname)
 
-    # Create generator instance
-    gen = generator(datapath, datalist, groundtruth, batches)
+if train:
+    # Loads in the model and trains it over dataset 1 and 3 for bearings 1 to 8
+    for x in range(1,4,2):
+        for y in range(1,8):
+            print("TRAINING: Dataset %i, Bearing %i" % (x, y))
 
-    # Train our model
-    brain.TrainModel(m, modelname, gen, steps, epochs)
+            datapath, datalist, groundtruth = getData(x, y) # dataset x, bearing y
 
+            # Create generator instance
+            gen = generator(datapath, datalist, groundtruth, batches)
+
+            # Train our model
+            brain.TrainModel(m, modelname, gen, steps, epochs)
+
+if evaluate:
+    # Evaluates model on dataset 2 for bearings 1 to 4
+    for z in range(1,4):
+        print("EVALUATING: Dataset %i, Bearing %i" % (x, y))
+        
+        datapath, datalist, groundtruth = getData(x, y) # dataset x, bearing y
+
+        # Create generator instance
+        gen = generator(datapath, datalist, groundtruth, batches)
+
+        # Evaluate the model
+        brain.EvaluateModel(m, modelname, gen, steps)

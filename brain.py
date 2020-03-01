@@ -39,7 +39,7 @@ def CreateModel():
     model.summary()
     
     # Generate optimizer
-    adam = keras.optimizers.Adam(learning_rate=0.000001)
+    adam = keras.optimizers.Adam(learning_rate=0.0001)
     
     # Compiles model with predetermined training configuration
     model.compile(optimizer=adam, loss='mean_squared_error', metrics=['mae'])
@@ -53,6 +53,12 @@ def TrainModel(model, target, generator, number_of_steps, number_of_epochs):
     checkpoint = keras.callbacks.ModelCheckpoint(filepath='./model/%s' % target, monitor='loss', verbose=1, save_best_only=True, mode='min')
     checkpoints = [checkpoint]
     model.fit_generator(generator, steps_per_epoch=number_of_steps, epochs=number_of_epochs, callbacks=checkpoints)
+
+def EvaluateModel(model, target, generator, number_of_steps):
+    # Define callbacks to allow training to continue if interrupted
+    checkpoint = keras.callbacks.ModelCheckpoint(filepath='./model/%s' % target, monitor='loss', verbose=1, save_best_only=True, mode='min')
+    checkpoints = [checkpoint]
+    model.fit_generator(generator, steps=number_of_steps, callbacks=checkpoints)
 
 # Loads in a model given its .h5 file name and creates an instance of it
 def LoadModel(target):
