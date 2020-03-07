@@ -15,9 +15,9 @@ import brain
 ## Options and Settings
 modelname = 'model.h5'
 
-create = False
-load = True
-train = False
+create = True
+load = False
+train = True
 evaluate = True
 predict = True
 ##
@@ -157,7 +157,7 @@ if evaluate:
         datapath, datalist, groundtruth, samples, batches, steps, epochs = getData(2, z) # dataset 2, bearing y
 
         # Create generator instance
-        gen = generator(datapath, datalist, groundtruth, batches)
+        gen = train_generator(datapath, datalist, groundtruth, batches)
 
         # Evaluate the model
         results = brain.EvaluateModel(m, modelname, gen, steps)
@@ -178,5 +178,23 @@ if predict:
         prediction = brain.PredictModel(m, modelname, gen, steps)
 
         print("Prediction: ", prediction)
-    
+
+f = datalist[200]
+
+# Open up our file
+input = open(datapath + f,"r")
+
+# Read our file
+line = np.array(input.readline().split(' '))
+
+# Split our input into an array of size (4,) and (10240,)
+# and find corresponding truth value
+split = np.split(line, [4])
+input1 = np.array([split[0]]).astype(np.float32)
+input2 = np.array([split[1]]).astype(np.float32)
+truth = groundtruth[datalist.index(f)].astype(np.float32)
+
+print(truth)
+print(m.predict([input1, input2]))
+
 brain.SaveModel(m, modelname)

@@ -22,7 +22,7 @@ def CreateModel():
     #y = keras.layers.LSTM(500, input_shape=(10240,1), activation='relu', return_sequences=False)(inputB)
     y = keras.layers.Dense(500, activation='relu')(inputB)
     y = keras.layers.Dropout(rate=0.2)(y) # Dropout layer with 20% dropout to prevent overfitting
-    y = keras.layers.Dense(250, activation='relu')(y)
+    y = keras.layers.Dense(500, activation='relu')(y)
     y = keras.layers.Dense(10, activation='relu')(y)
 
     # Combine these branches
@@ -53,24 +53,18 @@ def TrainModel(model, target, generator, number_of_steps, number_of_epochs):
     checkpoints = [checkpoint]
     model.fit_generator(generator, steps_per_epoch=number_of_steps, epochs=number_of_epochs, verbose=1)#, callbacks=checkpoints)
 
-def EvaluateModel(model, target, generator, number_of_steps):
-    # Define callbacks to allow training to continue if interrupted
-    # checkpoint = keras.callbacks.ModelCheckpoint(filepath='./model/%s' % target, monitor='loss', verbose=1, save_best_only=True, mode='min')
-    # checkpoints = [checkpoint]
+def EvaluateModel(model, generator, number_of_steps):
     model.evaluate_generator(generator, steps=number_of_steps, verbose=1)
     
-def PredictModel(model, target, generator, number_of_steps):
-    # Define callbacks to allow training to continue if interrupted
-    #checkpoint = keras.callbacks.ModelCheckpoint(filepath='./model/%s' % target, monitor='loss', verbose=1, save_best_only=True, mode='min')
-    #checkpoints = [checkpoint]
-    model.evaluate_generator(generator, steps=number_of_steps, verbose=1)
+def PredictModel(model, generator, number_of_steps):
+    model.predict_generator(generator, steps=number_of_steps, verbose=1)
 
 # Loads in a model given its .h5 file name and creates an instance of it
 def LoadModel(target):
     print("Loading model %s..." % target)
     model = keras.models.load_model('./model/%s' % target)
     #model.summary()
-    model.get_weights()
+    #model.get_weights()
 
     return model
     
