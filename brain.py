@@ -14,7 +14,7 @@ def CreateModel():
     inputB = keras.layers.Input(shape=(10240,))
 
     # First branch
-    x = keras.layers.Dense(20, activation="relu")(inputA)
+    x = keras.layers.Dense(10, activation="relu")(inputA)
 
     #TODO:: Get LSTM layer to work
 
@@ -22,7 +22,7 @@ def CreateModel():
     #y = keras.layers.LSTM(500, input_shape=(10240,1), activation='relu', return_sequences=False)(inputB)
     y = keras.layers.Dense(500, activation='relu')(inputB)
     y = keras.layers.Dropout(rate=0.2)(y) # Dropout layer with 20% dropout to prevent overfitting
-    y = keras.layers.Dense(500, activation='relu')(y)
+    y = keras.layers.Dense(250, activation='relu')(y)
     y = keras.layers.Dense(10, activation='relu')(y)
 
     # Combine these branches
@@ -30,7 +30,7 @@ def CreateModel():
 
     # Final layers
     z = keras.layers.Dense(20, activation='relu')(concatenate)
-    z = keras.layers.Dense(1, activation='relu')(z)
+    z = keras.layers.Dense(1, activation='sigmoid')(z)
 
     # Final model
     model = keras.models.Model(inputs=[inputA, inputB], outputs = z)
@@ -49,9 +49,8 @@ def CreateModel():
 # Trains a model to a given a generator, target, epochs and step size (batches done by generator)
 def TrainModel(model, target, generator, number_of_steps, number_of_epochs):
     # Define callbacks to allow training to continue if interrupted
-    checkpoint = keras.callbacks.ModelCheckpoint(filepath='./model/%s' % target, monitor='loss', verbose=1, save_best_only=True, mode='min')
-    checkpoints = [checkpoint]
-    model.fit_generator(generator, steps_per_epoch=number_of_steps, epochs=number_of_epochs, verbose=1)#, callbacks=checkpoints)
+    checkpointer = keras.callbacks.ModelCheckpoint(filepath='./model/%s' % target, monitor='loss', verbose=1, save_best_only=True, mode='min')
+    model.fit_generator(generator, steps_per_epoch=number_of_steps, epochs=number_of_epochs, verbose=1, callbacks=[checkpointer])
 
 def EvaluateModel(model, generator, number_of_steps):
     model.evaluate_generator(generator, steps=number_of_steps, verbose=1)
