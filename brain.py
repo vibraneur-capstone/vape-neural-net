@@ -46,16 +46,17 @@ def CreateModel():
     
     return model
 
-#TODO::Sort out epochs and batches
 # Trains a model to a given a generator, target, epochs and step size (batches done by generator)
 def TrainModel(model, target, generator, number_of_steps, number_of_epochs):
     # Define callbacks to allow training to continue if interrupted
-    #checkpoint = keras.callbacks.ModelCheckpoint(filepath='./model/%s' % target, monitor='loss', verbose=1, save_best_only=True, mode='min')
-    #checkpoints = [checkpoint]
-    model.fit_generator(generator, steps_per_epoch=number_of_steps, epochs=number_of_epochs)#, callbacks=checkpoints)
+    checkpoint = keras.callbacks.ModelCheckpoint(filepath='./model/%s' % target, monitor='loss', verbose=1, save_best_only=True, mode='min')
+    checkpoints = [checkpoint]
+    model.fit_generator(generator, steps_per_epoch=number_of_steps, epochs=number_of_epochs, verbose=1)#, callbacks=checkpoints)
 
 def EvaluateModel(model, target, generator, number_of_steps):
     # Define callbacks to allow training to continue if interrupted
+    checkpoint = keras.callbacks.ModelCheckpoint(filepath='./model/%s' % target, monitor='loss', verbose=1, save_best_only=True, mode='min')
+    checkpoints = [checkpoint]
     model.evaluate_generator(generator, steps=number_of_steps, verbose=1)
 
 # Loads in a model given its .h5 file name and creates an instance of it
@@ -66,9 +67,6 @@ def LoadModel(target):
     model.get_weights()
 
     return model
-    
-    # Create a model instance
-    #model = create_model()
     
 # Saves model as target .h5 file name.
 def SaveModel(model, target):

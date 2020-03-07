@@ -104,7 +104,6 @@ if train:
 
         # Train our model
         history = brain.TrainModel(m, modelname, gen, steps, epochs)
-        brain.SaveModel(m, modelname)
     
     dataset = 3
     for y in range(1,5):
@@ -115,7 +114,7 @@ if train:
         # Create generator instance
         gen = generator(datapath, datalist, groundtruth, batches)
 
-        # Train our model
+        # Train our msdodel
         history = brain.TrainModel(m, modelname, gen, steps, epochs)
 
 # Evaluation for dataset 2
