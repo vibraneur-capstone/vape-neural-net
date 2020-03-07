@@ -14,7 +14,7 @@ def CreateModel():
     inputB = keras.layers.Input(shape=(10240,))
 
     # First branch
-    x = keras.layers.Dense(10, activation="relu")(inputA)
+    x = keras.layers.Dense(20, activation="relu")(inputA)
 
     #TODO:: Get LSTM layer to work
 
@@ -29,7 +29,7 @@ def CreateModel():
     concatenate = keras.layers.concatenate([x, y])
 
     # Final layers
-    z = keras.layers.Dense(10, activation='relu')(concatenate)
+    z = keras.layers.Dense(20, activation='relu')(concatenate)
     z = keras.layers.Dense(1, activation='relu')(z)
 
     # Final model
@@ -39,7 +39,7 @@ def CreateModel():
     model.summary()
     
     # Generate optimizer
-    adam = keras.optimizers.Adam(learning_rate=0.00001)
+    adam = keras.optimizers.Adam(learning_rate=0.0000001)
     
     # Compiles model with predetermined training configuration
     model.compile(optimizer=adam, loss='mean_squared_error', metrics=['mae'])
