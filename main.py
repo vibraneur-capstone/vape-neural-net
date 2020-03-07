@@ -15,10 +15,11 @@ import brain
 ## Options and Settings
 modelname = 'model.h5'
 
-create = True
-load = False
-train = True
-evaluate = True
+create = False
+load = True
+train = False
+evaluate = False
+predict = True
 ##
 
 # Formats lists of files given a bearing and dataset. Returns path, list of files and groundtruth array
@@ -131,5 +132,19 @@ if evaluate:
         results = brain.EvaluateModel(m, modelname, gen, steps)
 
         print("Evaluation metrics: ", results)
+
+if predict:
+    for p in range(1,5):
+        print("PREDICTING: Dataset %i, Bearing %i" % (2, p))
         
+        datapath, datalist, groundtruth, samples, batches, steps, epochs = getData(2, p) # dataset x, bearing y
+
+        # Create generator instance
+        gen = generator(datapath, datalist, groundtruth, batches)
+
+        # Evaluate the model
+        prediction = brain.PredictModel(m, modelname, gen, steps)
+
+        print("Prediction: ", prediction)
+    
 brain.SaveModel(m, modelname)

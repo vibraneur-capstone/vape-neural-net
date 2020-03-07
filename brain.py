@@ -55,8 +55,14 @@ def TrainModel(model, target, generator, number_of_steps, number_of_epochs):
 
 def EvaluateModel(model, target, generator, number_of_steps):
     # Define callbacks to allow training to continue if interrupted
-    checkpoint = keras.callbacks.ModelCheckpoint(filepath='./model/%s' % target, monitor='loss', verbose=1, save_best_only=True, mode='min')
-    checkpoints = [checkpoint]
+    # checkpoint = keras.callbacks.ModelCheckpoint(filepath='./model/%s' % target, monitor='loss', verbose=1, save_best_only=True, mode='min')
+    # checkpoints = [checkpoint]
+    model.evaluate_generator(generator, steps=number_of_steps, verbose=1)
+    
+def PredictModel(model, target, generator, number_of_steps):
+    # Define callbacks to allow training to continue if interrupted
+    #checkpoint = keras.callbacks.ModelCheckpoint(filepath='./model/%s' % target, monitor='loss', verbose=1, save_best_only=True, mode='min')
+    #checkpoints = [checkpoint]
     model.evaluate_generator(generator, steps=number_of_steps, verbose=1)
 
 # Loads in a model given its .h5 file name and creates an instance of it
