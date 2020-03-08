@@ -15,9 +15,9 @@ import brain
 ## Options and Settings
 modelname = 'model.h5'
 
-create = True
-load = False
-train = True
+create = False
+load = True
+train = False
 evaluate = True
 predict = True
 ##
@@ -160,7 +160,7 @@ if evaluate:
         gen = train_generator(datapath, datalist, groundtruth, batches)
 
         # Evaluate the model
-        results = brain.EvaluateModel(m, modelname, gen, steps)
+        results = brain.EvaluateModel(m, gen, steps)
 
         print("Evaluation metrics: ", results)
 
@@ -175,7 +175,7 @@ if predict:
         gen = eval_generator(datapath, datalist, batches)
 
         # Evaluate the model
-        prediction = brain.PredictModel(m, modelname, gen, steps)
+        prediction = brain.PredictModel(m, gen, steps)
 
         print("Prediction: ", prediction)
 
