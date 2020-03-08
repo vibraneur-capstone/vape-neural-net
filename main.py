@@ -15,9 +15,9 @@ import brain
 ## Options and Settings
 modelname = 'model.h5'
 
-create = False
-load = True
-train = False
+create = True
+load = False
+train = True
 evaluate = True
 predict = True
 ##
@@ -40,7 +40,7 @@ def getData(dataset, bearing):
     samples = len(data)
     batches = 4 # Safe batch size
     steps = ceil(samples/batches)
-    epochs = 30
+    epochs = 20
     ##
     
     return dpath, data, gt, samples, batches, steps, epochs
