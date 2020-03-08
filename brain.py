@@ -14,22 +14,22 @@ def CreateModel():
     inputB = keras.layers.Input(shape=(10240,))
 
     # First branch
-    x = keras.layers.Dense(10, activation="relu")(inputA)
+    x = keras.layers.Dense(10, activation='sigmoid')(inputA)
 
     #TODO:: Get LSTM layer to work
 
     # Second branch
     #y = keras.layers.LSTM(500, input_shape=(10240,1), activation='relu', return_sequences=False)(inputB)
-    y = keras.layers.Dense(500, activation='relu')(inputB)
+    y = keras.layers.Dense(500, activation='sigmoid')(inputB)
     y = keras.layers.Dropout(rate=0.2)(y) # Dropout layer with 20% dropout to prevent overfitting
-    y = keras.layers.Dense(250, activation='relu')(y)
-    y = keras.layers.Dense(10, activation='relu')(y)
+    y = keras.layers.Dense(250, activation='sigmoid')(y)
+    y = keras.layers.Dense(10, activation='sigmoid')(y)
 
     # Combine these branches
     concatenate = keras.layers.concatenate([x, y])
 
     # Final layers
-    z = keras.layers.Dense(20, activation='relu')(concatenate)
+    z = keras.layers.Dense(20, activation='sigmoid')(concatenate)
     z = keras.layers.Dense(1, activation='sigmoid')(z)
 
     # Final model
