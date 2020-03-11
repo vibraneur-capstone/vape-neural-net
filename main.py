@@ -199,7 +199,7 @@ for f in datalist:
     input2 = np.array([split[1]]).astype(np.float32)
     truth = groundtruth[datalist.index(f)].astype(np.float32)
 
-    print("Truth: ", truth, ", Prediction: ", m.predict([input1, input2])))
+    print("Truth: ", truth, ", Prediction: ", m.predict([input1, input2]))
 
 #brain.PlotModel(history, results)
 
