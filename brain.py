@@ -6,41 +6,43 @@
 import tensorflow as tf
 from tensorflow import keras
 import numpy as np
+import matplotlib.pyplot as plt
 
 # Creates the model. Use this to initialize or reinitialize the model for training.
 def CreateModel():
     # Inputs
     inputA = keras.layers.Input(shape=(4,))
-    inputB = keras.layers.Input(shape=(10240,))
+    #inputB = keras.layers.Input(shape=(10240,))
 
     # First branch
-    x = keras.layers.Dense(10, activation='relu')(inputA)
+    x = keras.layers.Dense(20, activation='relu')(inputA)
 
     #TODO:: Get LSTM layer to work
 
     # Second branch
     #y = keras.layers.LSTM(500, input_shape=(10240,1), activation='relu', return_sequences=False)(inputB)
-    y = keras.layers.Dense(500, activation='relu')(inputB)
-    y = keras.layers.Dropout(rate=0.2)(y) # Dropout layer with 20% dropout to prevent overfitting
-    y = keras.layers.Dense(250, activation='relu')(y)
-    y = keras.layers.Dense(100, activation='relu')(y)
-    y = keras.layers.Dense(10, activation='relu')(y)
+    #y = keras.layers.Dense(250, activation='relu')(inputB)
+    #y = keras.layers.Dropout(rate=0.3)(y) # Dropout layer with 20% dropout to prevent overfitting
+    #y = keras.layers.Dense(250, activation='relu')(y)
+    #y = keras.layers.Dense(10, activation='relu')(y)
 
     # Combine these branches
-    concatenate = keras.layers.concatenate([x, y])
+    #concatenate = keras.layers.concatenate([x, y])
 
     # Final layers
-    z = keras.layers.Dense(20, activation='relu')(concatenate)
+    #z = keras.layers.Dense(20, activation='relu')(concatenate)
+    z = keras.layers.Dense(20, activation='relu')(x)
     z = keras.layers.Dense(1)(z)
+    z = keras.layers.LeakyReLU(alpha=0.1)(z)
 
     # Final model
-    model = keras.models.Model(inputs=[inputA, inputB], outputs = z)
+    model = keras.models.Model(inputs=inputA, outputs = z)
 
     # Display model architecture
     model.summary()
     
     # Generate optimizer
-    adam = keras.optimizers.Adam(learning_rate=0.0000001)
+    adam = keras.optimizers.Adam(learning_rate=0.00000001)
     
     # Compiles model with predetermined training configuration
     model.compile(optimizer=adam, loss='mean_squared_error', metrics=['mae', 'mean_squared_error'])
@@ -58,6 +60,25 @@ def EvaluateModel(model, generator, number_of_steps):
     
 def PredictModel(model, generator, number_of_steps):
     model.predict_generator(generator, steps=number_of_steps, verbose=1)
+    
+def PlotModel(history, validation):
+    # Plot training and validation loss values
+    plt.plot(history.history['loss'])
+    plt.plot(validation.history['val_loss'])
+    plt.title('Model Loss')
+    plt.ylabel('Loss')
+    plt.xlabel('Epoch')
+    plt.legend(['Train', 'Test'], loc='upper left')
+    plt.show()
+    
+    # Plot training and validation mean absolute error values
+    plt.plot(history.history['mae'])
+    plt.plot(validation.history['val_mae'])
+    plt.title('Model Error')
+    plt.ylabel('Mean Absolute Error')
+    plt.xlabel('Epoch')
+    plt.legend(['Train', 'Test'], loc='upper left')
+    plt.show()
 
 # Loads in a model given its .h5 file name and creates an instance of it
 def LoadModel(target):

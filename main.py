@@ -40,7 +40,7 @@ def getData(dataset, bearing):
     samples = len(data)
     batches = 4 # Safe batch size
     steps = ceil(samples/batches)
-    epochs = 20
+    epochs = 30
     ##
     
     return dpath, data, gt, samples, batches, steps, epochs
@@ -73,14 +73,15 @@ def train_generator(path, files, groundtruth, batchsize):
                 split = np.split(line, [4])
                 try:
                     input1 = np.array([split[0]]).astype(np.float32)
-                    input2 = np.array([split[1]]).astype(np.float32)
+                    #input2 = np.array([split[1]]).astype(np.float32)
                     truth = groundtruth[files.index(f)].astype(np.float32)
                 except:
                     print("\nSomething went wrong with your data in file " + f + "\n")
                     continue
                 
                 # Stream this to the model during training
-                yield ([input1, input2], truth)
+                #yield ([input1, input2], truth)
+                yield(input1, truth)
 
 def eval_generator(path, files, batchsize):
     while True:
@@ -105,13 +106,14 @@ def eval_generator(path, files, batchsize):
                 split = np.split(line, [4])
                 try:
                     input1 = np.array([split[0]]).astype(np.float32)
-                    input2 = np.array([split[1]]).astype(np.float32)
+                    #input2 = np.array([split[1]]).astype(np.float32)
                 except:
                     print("\nSomething went wrong with your data in file " + f + "\n")
                     continue
                 
                 # Stream this to the model during training
-                yield ([input1, input2])
+                #yield ([input1, input2])
+                yield(input1)
 
 ### Manipulate the model here ###
 
@@ -179,22 +181,25 @@ if predict:
 
         print("Prediction: ", prediction)
 
-f = datalist[200]
+# Testing out predictions because predict_generator isn't working
+datapath, datalist, groundtruth, samples, batches, steps, epochs = getData(2, 4)
 
-# Open up our file
-input = open(datapath + f,"r")
+for f in datalist:
+    # Open up our file
+    input = open(datapath + f,"r")
 
-# Read our file
-line = np.array(input.readline().split(' '))
+    # Read our file
+    line = np.array(input.readline().split(' '))
 
-# Split our input into an array of size (4,) and (10240,)
-# and find corresponding truth value
-split = np.split(line, [4])
-input1 = np.array([split[0]]).astype(np.float32)
-input2 = np.array([split[1]]).astype(np.float32)
-truth = groundtruth[datalist.index(f)].astype(np.float32)
+    # Split our input into an array of size (4,) and (10240,)
+    # and find corresponding truth value
+    split = np.split(line, [4])
+    input1 = np.array([split[0]]).astype(np.float32)
+    #input2 = np.array([split[1]]).astype(np.float32)
+    truth = groundtruth[datalist.index(f)].astype(np.float32)
 
-print(truth)
-print(m.predict([input1, input2]))
+    print("Truth: ", truth, ", Prediction: ", m.predict(input1))#m.predict([input1, input2])))
+
+brain.PlotModel(history, results)
 
 brain.SaveModel(m, modelname)
