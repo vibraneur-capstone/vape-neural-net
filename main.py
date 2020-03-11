@@ -135,10 +135,10 @@ if train:
         datapath, datalist, groundtruth, samples, batches, steps, epochs = getData(dataset, y) # dataset x, bearing y
 
         # Create generator instance
-        gen = train_generator(datapath, datalist, groundtruth, 28)
+        gen = train_generator(datapath, datalist, groundtruth, 22)
 
         # Train our model
-        history = brain.TrainModel(m, modelname, gen, 77, epochs)
+        history = brain.TrainModel(m, modelname, gen, 98, epochs)
     
     dataset = 3
     for y in range(1,5):
@@ -147,10 +147,10 @@ if train:
         datapath, datalist, groundtruth, samples, batches, steps, epochs = getData(dataset, y) # dataset x, bearing y
 
         # Create generator instance
-        gen = train_generator(datapath, datalist, groundtruth, 34)
+        gen = train_generator(datapath, datalist, groundtruth, 17)
 
         # Train our model
-        history = brain.TrainModel(m, modelname, gen, 51, epochs)
+        history = brain.TrainModel(m, modelname, gen, 372, epochs)
 
 # Evaluation for dataset 2
 if evaluate:
