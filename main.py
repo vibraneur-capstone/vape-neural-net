@@ -74,15 +74,15 @@ def train_generator(path, files, groundtruth, batchsize):
                 split = np.split(line, [4])
                 try:
                     input1 = np.array([split[0]]).astype(np.float32)
-                    #input2 = np.array([split[1]]).astype(np.float32)
+                    input2 = np.array([split[1]]).astype(np.float32)
                     truth = groundtruth[files.index(f)].astype(np.float32)
                 except:
                     print("\nSomething went wrong with your data in file " + f + "\n")
                     continue
                 
                 # Stream this to the model during training
-                #yield ([input1, input2], truth)
-                yield(input1, truth)
+                yield ([input1, input2], truth)
+                #yield(input1, truth)
 
 def eval_generator(path, files, batchsize):
     while True:
@@ -107,14 +107,14 @@ def eval_generator(path, files, batchsize):
                 split = np.split(line, [4])
                 try:
                     input1 = np.array([split[0]]).astype(np.float32)
-                    #input2 = np.array([split[1]]).astype(np.float32)
+                    input2 = np.array([split[1]]).astype(np.float32)
                 except:
                     print("\nSomething went wrong with your data in file " + f + "\n")
                     continue
                 
                 # Stream this to the model during training
-                #yield ([input1, input2])
-                yield(input1)
+                yield ([input1, input2])
+                #yield(input1)
 
 ### Manipulate the model here ###
 
@@ -196,10 +196,10 @@ for f in datalist:
     # and find corresponding truth value
     split = np.split(line, [4])
     input1 = np.array([split[0]]).astype(np.float32)
-    #input2 = np.array([split[1]]).astype(np.float32)
+    input2 = np.array([split[1]]).astype(np.float32)
     truth = groundtruth[datalist.index(f)].astype(np.float32)
 
-    print("Truth: ", truth, ", Prediction: ", m.predict(input1))#m.predict([input1, input2])))
+    print("Truth: ", truth, ", Prediction: ", m.predict([input1, input2])))
 
 #brain.PlotModel(history, results)
 

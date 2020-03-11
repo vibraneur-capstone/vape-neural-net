@@ -38,7 +38,7 @@ def CreateModel():
     z = keras.layers.Dense(1)(z)
 
     # Final model
-    model = keras.models.Model(inputs=inputA, outputs = z)
+    model = keras.models.Model(inputs=[inputA, inputB], outputs = z)
 
     # Display model architecture
     model.summary()
@@ -47,7 +47,7 @@ def CreateModel():
     adam = keras.optimizers.Adam(learning_rate=0.000000000001)
     
     # Compiles model with predetermined training configuration
-    model.compile(optimizer=adam, loss='mean_squared_error', metrics=['mae', 'mean_squared_error'])
+    model.compile(optimizer=adam, loss='mean_squared_error', metrics=['mae'])
     
     return model
 
