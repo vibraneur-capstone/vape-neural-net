@@ -24,7 +24,7 @@ def CreateModel():
     #y = keras.layers.LSTM(500, input_shape=(10240,1), activation='relu', return_sequences=False)(inputB)
     y = keras.layers.Dense(250, activation='relu')(inputB)
     y = keras.layers.LeakyReLU(alpha=0.05)(y)
-    y = keras.layers.Dropout(rate=0.3)(y) # Dropout layer with 20% dropout to prevent overfitting
+    #y = keras.layers.Dropout(rate=0.1)(y) # Dropout layer with 20% dropout to prevent overfitting
     y = keras.layers.Dense(250, activation='relu')(y)
     y = keras.layers.LeakyReLU(alpha=0.05)(y)
     y = keras.layers.Dense(10, activation='relu')(y)
