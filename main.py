@@ -41,7 +41,7 @@ def getData(dataset, bearing):
     samples = len(data)
     batches = 4 # Safe batch size
     steps = ceil(samples/batches)
-    epochs = 50
+    epochs = 100
     ##
     
     return dpath, data, gt, samples, batches, steps, epochs

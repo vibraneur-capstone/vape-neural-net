@@ -16,6 +16,7 @@ def CreateModel():
 
     # First branch
     x = keras.layers.Dense(20, activation='relu')(inputA)
+    x = keras.layers.LeakyReLU(alpha=0.05)(x)
 
     #TODO:: Get LSTM layer to work
 
@@ -32,6 +33,7 @@ def CreateModel():
     # Final layers
     #z = keras.layers.Dense(20, activation='relu')(concatenate)
     z = keras.layers.Dense(20, activation='relu')(x)
+    z = keras.layers.LeakyReLU(alpha=0.05)(z)
     z = keras.layers.Dense(1)(z)
 
     # Final model
@@ -41,7 +43,7 @@ def CreateModel():
     model.summary()
     
     # Generate optimizer
-    adam = keras.optimizers.Adam(learning_rate=0.00001)
+    adam = keras.optimizers.Adam(learning_rate=0.0000000001)
     
     # Compiles model with predetermined training configuration
     model.compile(optimizer=adam, loss='mean_squared_error', metrics=['mae', 'mean_squared_error'])
