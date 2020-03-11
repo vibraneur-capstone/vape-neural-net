@@ -41,7 +41,7 @@ def getData(dataset, bearing):
     samples = len(data)
     batches = 4 # Safe batch size
     steps = ceil(samples/batches)
-    epochs = 30
+    epochs = 50
     ##
     
     return dpath, data, gt, samples, batches, steps, epochs
@@ -135,10 +135,10 @@ if train:
         datapath, datalist, groundtruth, samples, batches, steps, epochs = getData(dataset, y) # dataset x, bearing y
 
         # Create generator instance
-        gen = train_generator(datapath, datalist, groundtruth, batches)
+        gen = train_generator(datapath, datalist, groundtruth, 28)
 
         # Train our model
-        history = brain.TrainModel(m, modelname, gen, steps, epochs)
+        history = brain.TrainModel(m, modelname, gen, 77, epochs)
     
     dataset = 3
     for y in range(1,5):
@@ -147,10 +147,10 @@ if train:
         datapath, datalist, groundtruth, samples, batches, steps, epochs = getData(dataset, y) # dataset x, bearing y
 
         # Create generator instance
-        gen = train_generator(datapath, datalist, groundtruth, batches)
+        gen = train_generator(datapath, datalist, groundtruth, 34)
 
         # Train our model
-        history = brain.TrainModel(m, modelname, gen, steps, epochs)
+        history = brain.TrainModel(m, modelname, gen, 51, epochs)
 
 # Evaluation for dataset 2
 if evaluate:

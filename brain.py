@@ -41,7 +41,7 @@ def CreateModel():
     model.summary()
     
     # Generate optimizer
-    adam = keras.optimizers.Adam(learning_rate=0.000001)
+    adam = keras.optimizers.Adam(learning_rate=0.00001)
     
     # Compiles model with predetermined training configuration
     model.compile(optimizer=adam, loss='mean_squared_error', metrics=['mae', 'mean_squared_error'])
