@@ -33,7 +33,6 @@ def CreateModel():
     #z = keras.layers.Dense(20, activation='relu')(concatenate)
     z = keras.layers.Dense(20, activation='relu')(x)
     z = keras.layers.Dense(1)(z)
-    z = keras.layers.LeakyReLU(alpha=0.1)(z)
 
     # Final model
     model = keras.models.Model(inputs=inputA, outputs = z)
@@ -42,7 +41,7 @@ def CreateModel():
     model.summary()
     
     # Generate optimizer
-    adam = keras.optimizers.Adam(learning_rate=0.00000001)
+    adam = keras.optimizers.Adam(learning_rate=0.000001)
     
     # Compiles model with predetermined training configuration
     model.compile(optimizer=adam, loss='mean_squared_error', metrics=['mae', 'mean_squared_error'])
@@ -60,7 +59,8 @@ def EvaluateModel(model, generator, number_of_steps):
     
 def PredictModel(model, generator, number_of_steps):
     model.predict_generator(generator, steps=number_of_steps, verbose=1)
-    
+
+'''  
 def PlotModel(history, validation):
     # Plot training and validation loss values
     plt.plot(history.history['loss'])
@@ -79,6 +79,7 @@ def PlotModel(history, validation):
     plt.xlabel('Epoch')
     plt.legend(['Train', 'Test'], loc='upper left')
     plt.show()
+'''
 
 # Loads in a model given its .h5 file name and creates an instance of it
 def LoadModel(target):

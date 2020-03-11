@@ -11,6 +11,7 @@ from os.path import isfile, join
 import numpy as np
 from math import ceil
 import brain
+import matplotlib.pyplot as plt
 
 ## Options and Settings
 modelname = 'model.h5'
@@ -200,6 +201,6 @@ for f in datalist:
 
     print("Truth: ", truth, ", Prediction: ", m.predict(input1))#m.predict([input1, input2])))
 
-brain.PlotModel(history, results)
+#brain.PlotModel(history, results)
 
 brain.SaveModel(m, modelname)
