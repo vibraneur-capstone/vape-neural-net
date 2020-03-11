@@ -30,7 +30,7 @@ def CreateModel():
     y = keras.layers.Dense(10, activation='relu')(y)
 
     # Combine these branches
-    #concatenate = keras.layers.concatenate([x, y])
+    concatenate = keras.layers.concatenate([x, y])
 
     # Final layers
     z = keras.layers.Dense(20, activation='relu')(concatenate)
