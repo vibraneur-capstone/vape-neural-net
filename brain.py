@@ -25,7 +25,7 @@ def CreateModel():
     y = keras.layers.Dense(1000, activation='relu')(inputB)
     y = keras.layers.LeakyReLU(alpha=0.05)(y)
     #y = keras.layers.Dropout(rate=0.1)(y) # Dropout layer with 20% dropout to prevent overfitting
-    y = keras.layers.Dense(500, activation='relu')(y)
+    y = keras.layers.Dense(1000, activation='relu')(y)
     y = keras.layers.LeakyReLU(alpha=0.05)(y)
     y = keras.layers.Dense(10, activation='relu')(y)
 
