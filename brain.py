@@ -12,32 +12,33 @@ import matplotlib.pyplot as plt
 def CreateModel():
     # Inputs
     inputA = keras.layers.Input(shape=(4,))
-    inputB = keras.layers.Input(shape=(10240,))
+    #inputB = keras.layers.Input(shape=(10240,))
 
     # First branch
-    x = keras.layers.Dense(200)(inputA)
+    x = keras.layers.Dense(1000)(inputA)
     x = keras.layers.LeakyReLU(alpha=0.05)(x)
 
     #TODO:: Get LSTM layer to work
 
     # Second branch
     #y = keras.layers.LSTM(500, input_shape=(10240,1), activation='relu', return_sequences=False)(inputB)
-    y = keras.layers.Dense(5000)(inputB)
-    y = keras.layers.LeakyReLU(alpha=0.05)(y)
+    #y = keras.layers.Dense(5000)(inputB)
+    #y = keras.layers.LeakyReLU(alpha=0.05)(y)
     #y = keras.layers.Dropout(rate=0.1)(y) # Dropout layer with 20% dropout to prevent overfitting
-    y = keras.layers.Dense(5000)(y)
-    y = keras.layers.LeakyReLU(alpha=0.05)(y)
-    y = keras.layers.Dense(2500)(y)
-    y = keras.layers.LeakyReLU(alpha=0.05)(y)
-    y = keras.layers.Dense(1000)(y)
-    y = keras.layers.LeakyReLU(alpha=0.05)(y)
-    y = keras.layers.Dense(200)(y)
+    #y = keras.layers.Dense(2500)(y)
+    #y = keras.layers.LeakyReLU(alpha=0.05)(y)
+    #y = keras.layers.Dense(2500)(y)
+    #y = keras.layers.LeakyReLU(alpha=0.05)(y)
+    #y = keras.layers.Dense(1000)(y)
+    #y = keras.layers.LeakyReLU(alpha=0.05)(y)
+    #y = keras.layers.Dense(200)(y)
 
     # Combine these branches
-    concatenate = keras.layers.concatenate([x, y])
+    #concatenate = keras.layers.concatenate([x, y])
 
     # Final layers
-    z = keras.layers.Dense(400)(concatenate)
+    z = keras.layers.Dense(1000)(x)
+    #z = keras.layers.Dense(400)(concatenate)
     z = keras.layers.LeakyReLU(alpha=0.05)(z)
     z = keras.layers.Dense(100)(z)
     z = keras.layers.LeakyReLU(alpha=0.05)(z)
@@ -45,7 +46,8 @@ def CreateModel():
     z = keras.layers.Dense(1)(z)
 
     # Final model
-    model = keras.models.Model(inputs=[inputA, inputB], outputs = z)
+    #model = keras.models.Model(inputs=[inputA, inputB], outputs = z)
+    model = keras.models.Model(inputs=inputA, outputs = z)
 
     # Display model architecture
     model.summary()
@@ -95,6 +97,7 @@ def PlotModel(history, validation):
 def LoadModel(target):
     print("Loading model %s..." % target)
     model = keras.models.load_model('./model/%s' % target)
+    keras.utils.plot_model(model, to_file='./model/model.png')
     #model.summary()
     #model.get_weights()
 
