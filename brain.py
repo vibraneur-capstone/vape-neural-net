@@ -15,26 +15,33 @@ def CreateModel():
     inputB = keras.layers.Input(shape=(10240,))
 
     # First branch
-    x = keras.layers.Dense(10, activation='relu')(inputA)
+    x = keras.layers.Dense(200)(inputA)
     x = keras.layers.LeakyReLU(alpha=0.05)(x)
 
     #TODO:: Get LSTM layer to work
 
     # Second branch
     #y = keras.layers.LSTM(500, input_shape=(10240,1), activation='relu', return_sequences=False)(inputB)
-    y = keras.layers.Dense(1000, activation='relu')(inputB)
+    y = keras.layers.Dense(5000)(inputB)
     y = keras.layers.LeakyReLU(alpha=0.05)(y)
     #y = keras.layers.Dropout(rate=0.1)(y) # Dropout layer with 20% dropout to prevent overfitting
-    y = keras.layers.Dense(1000, activation='relu')(y)
+    y = keras.layers.Dense(5000)(y)
     y = keras.layers.LeakyReLU(alpha=0.05)(y)
-    y = keras.layers.Dense(10, activation='relu')(y)
+    y = keras.layers.Dense(2500)(y)
+    y = keras.layers.LeakyReLU(alpha=0.05)(y)
+    y = keras.layers.Dense(1000)(y)
+    y = keras.layers.LeakyReLU(alpha=0.05)(y)
+    y = keras.layers.Dense(200)(y)
 
     # Combine these branches
     concatenate = keras.layers.concatenate([x, y])
 
     # Final layers
-    z = keras.layers.Dense(20, activation='relu')(concatenate)
+    z = keras.layers.Dense(400)(concatenate)
     z = keras.layers.LeakyReLU(alpha=0.05)(z)
+    z = keras.layers.Dense(100)(z)
+    z = keras.layers.LeakyReLU(alpha=0.05)(z)
+    
     z = keras.layers.Dense(1)(z)
 
     # Final model
@@ -44,7 +51,7 @@ def CreateModel():
     model.summary()
     
     # Generate optimizer
-    adam = keras.optimizers.Adam(learning_rate=0.000000000001)
+    adam = keras.optimizers.Adam(learning_rate=0.0000000000001)
     
     # Compiles model with predetermined training configuration
     model.compile(optimizer=adam, loss='mean_squared_error', metrics=['mae'])

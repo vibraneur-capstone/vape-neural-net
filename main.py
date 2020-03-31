@@ -16,11 +16,11 @@ import matplotlib.pyplot as plt
 ## Options and Settings
 modelname = 'model.h5'
 
-create = True
-load = False
-train = True
-evaluate = True
-predict = True
+create = False
+load = True
+train = False
+evaluate = False
+predict = False
 ##
 
 # Formats lists of files given a bearing and dataset. Returns path, list of files and groundtruth array
@@ -41,7 +41,7 @@ def getData(dataset, bearing):
     samples = len(data)
     batches = 4 # Safe batch size
     steps = ceil(samples/batches)
-    epochs = 50
+    epochs = 200
     ##
     
     return dpath, data, gt, samples, batches, steps, epochs
@@ -127,7 +127,7 @@ if load:
 
 # Training for dataset 1 and 3
 if train:
-
+    """
     dataset=1
     for y in range(1,9):
         print("TRAINING: Dataset %i, Bearing %i" % (dataset, y))
@@ -139,6 +139,7 @@ if train:
 
         # Train our model
         history = brain.TrainModel(m, modelname, gen, 98, epochs)
+    """
     
     dataset = 2
     for y in range(1,5):
@@ -152,6 +153,7 @@ if train:
         # Train our model
         history = brain.TrainModel(m, modelname, gen, 41, epochs)
     
+    """
     dataset = 3
     for y in range(1,5):
         print("TRAINING: Dataset %i, Bearing %i" % (dataset, y))
@@ -163,6 +165,7 @@ if train:
 
         # Train our model
         history = brain.TrainModel(m, modelname, gen, 372, epochs)
+    """
 
 # Evaluation for dataset 2
 if evaluate:
@@ -195,7 +198,7 @@ if predict:
         print("Prediction: ", prediction)
 
 # Testing out predictions because predict_generator isn't working
-datapath, datalist, groundtruth, samples, batches, steps, epochs = getData(2, 4)
+datapath, datalist, groundtruth, samples, batches, steps, epochs = getData(2, 2)
 
 for f in datalist:
     # Open up our file
