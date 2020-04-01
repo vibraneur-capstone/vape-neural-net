@@ -75,7 +75,7 @@ def train_generator(path, files, groundtruth, batchsize):
                 try:
                     input1 = np.array([split[0]]).astype(np.float32)
                     #input2 = np.array([split[1]]).astype(np.float32)
-                    truth = groundtruth[files.index(f)].astype(np.float32)
+                    truth = groundtruth[i].astype(np.float32)
                 except:
                     print("\nSomething went wrong with your data in file " + f + "\n")
                     continue
@@ -127,6 +127,7 @@ if load:
 
 # Training for dataset 1 and 3
 if train:
+    
     """
     dataset=1
     for y in range(1,9):
@@ -198,7 +199,7 @@ if predict:
         print("Prediction: ", prediction)
 
 # Testing out predictions because predict_generator isn't working
-datapath, datalist, groundtruth, samples, batches, steps, epochs = getData(2, 2)
+datapath, datalist, groundtruth, samples, batches, steps, epochs = getData(2, 4)
 
 for f in datalist:
     # Open up our file

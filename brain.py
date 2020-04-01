@@ -15,8 +15,9 @@ def CreateModel():
     #inputB = keras.layers.Input(shape=(10240,))
 
     # First branch
-    x = keras.layers.Dense(1000)(inputA)
-    x = keras.layers.LeakyReLU(alpha=0.05)(x)
+    x = keras.layers.Dense(10, kernel_initializer='random_uniform', bias_initializer='zeros')(inputA)#,kernel_regularizer=keras.regularizers.l2(0.01))(inputA)
+    x = keras.layers.BatchNormalization()(x)
+    #x = keras.layers.LeakyReLU(alpha=0.1)(x)
 
     #TODO:: Get LSTM layer to work
 
@@ -37,11 +38,11 @@ def CreateModel():
     #concatenate = keras.layers.concatenate([x, y])
 
     # Final layers
-    z = keras.layers.Dense(1000)(x)
+    z = keras.layers.Dense(10, kernel_initializer='random_uniform', bias_initializer='zeros')(x)
     #z = keras.layers.Dense(400)(concatenate)
-    z = keras.layers.LeakyReLU(alpha=0.05)(z)
-    z = keras.layers.Dense(100)(z)
-    z = keras.layers.LeakyReLU(alpha=0.05)(z)
+    #z = keras.layers.LeakyReLU(alpha=0.1)(z)
+
+    #z = keras.layers.LeakyReLU(alpha=0.05)(z)
     
     z = keras.layers.Dense(1)(z)
 
@@ -53,18 +54,21 @@ def CreateModel():
     model.summary()
     
     # Generate optimizer
-    adam = keras.optimizers.Adam(learning_rate=0.0000000000001)
+    sgd = keras.optimizers.SGD(learning_rate=0.00000001)
+    #adam = keras.optimizers.Adam(learning_rate=0.0000001)
     
     # Compiles model with predetermined training configuration
-    model.compile(optimizer=adam, loss='mean_squared_error', metrics=['mae'])
+    model.compile(optimizer=sgd, loss='mean_squared_error', metrics=['mae'])
+    #model.compile(optimizer=adam, loss='mean_squared_error', metrics=['mae'])
     
     return model
 
 # Trains a model to a given a generator, target, epochs and step size (batches done by generator)
 def TrainModel(model, target, generator, number_of_steps, number_of_epochs):
     # Define callbacks to allow training to continue if interrupted
-    checkpointer = keras.callbacks.ModelCheckpoint(filepath='./model/%s' % target, monitor='loss', verbose=1, save_best_only=True, mode='min')
-    model.fit_generator(generator, steps_per_epoch=number_of_steps, epochs=number_of_epochs, verbose=1, callbacks=[checkpointer])
+    checkpointer = [keras.callbacks.EarlyStopping(monitor='loss', patience=3),
+        keras.callbacks.ModelCheckpoint(filepath='./model/%s' % target, monitor='loss', verbose=1, save_best_only=True, mode='min')]
+    model.fit_generator(generator, steps_per_epoch=number_of_steps, epochs=number_of_epochs, verbose=1, callbacks=checkpointer)
 
 def EvaluateModel(model, generator, number_of_steps):
     model.evaluate_generator(generator, steps=number_of_steps, verbose=1)
